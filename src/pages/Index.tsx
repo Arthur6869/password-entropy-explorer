@@ -16,7 +16,7 @@ import { StatisticsVisualizer } from '@/components/StatisticsVisualizer';
 import { Shield, Lock, Key, AlertTriangle } from 'lucide-react';
 
 const Index = () => {
-  const [passwordLength, setPasswordLength] = useState(12);
+  const [passwordLength, setPasswordLength] = useState(16);
   const [characterSets, setCharacterSets] = useState({
     lowercase: true,
     uppercase: true,
@@ -55,22 +55,28 @@ const Index = () => {
               Configuração de Parâmetros
             </CardTitle>
             <CardDescription>
-              Defina os parâmetros para geração e análise das senhas
+              Defina os parâmetros para geração e análise das senhas (até 64 caracteres para máxima segurança)
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-4">
                 <div className="space-y-2">
-                  <Label>Comprimento da Senha: {passwordLength}</Label>
+                  <Label>Comprimento da Senha: {passwordLength} caracteres</Label>
                   <Input
                     type="range"
                     min="4"
-                    max="32"
+                    max="64"
                     value={passwordLength}
                     onChange={(e) => setPasswordLength(Number(e.target.value))}
                     className="w-full"
                   />
+                  <div className="flex justify-between text-xs text-gray-500">
+                    <span>4 (Muito Fraca)</span>
+                    <span>16 (Recomendado)</span>
+                    <span>32 (Forte)</span>
+                    <span>64 (Máxima)</span>
+                  </div>
                 </div>
               </div>
               
@@ -99,6 +105,30 @@ const Index = () => {
                   ))}
                 </div>
               </div>
+            </div>
+
+            {/* Indicador de Segurança */}
+            <div className="bg-gradient-to-r from-gray-50 to-blue-50 p-4 rounded-lg">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-sm font-medium">Nível de Segurança Estimado:</span>
+                <Badge className={
+                  passwordLength >= 32 ? 'bg-green-500' :
+                  passwordLength >= 16 ? 'bg-blue-500' :
+                  passwordLength >= 12 ? 'bg-yellow-500' :
+                  'bg-red-500'
+                }>
+                  {passwordLength >= 32 ? 'Extremamente Forte' :
+                   passwordLength >= 16 ? 'Muito Forte' :
+                   passwordLength >= 12 ? 'Forte' :
+                   passwordLength >= 8 ? 'Médio' : 'Fraco'}
+                </Badge>
+              </div>
+              <p className="text-xs text-gray-600">
+                {passwordLength >= 32 ? 'Resistente a ataques por milhares de anos mesmo com supercomputadores' :
+                 passwordLength >= 16 ? 'Excelente proteção contra ataques modernos' :
+                 passwordLength >= 12 ? 'Adequado para a maioria dos usos' :
+                 'Pode ser vulnerável a ataques avançados'}
+              </p>
             </div>
           </CardContent>
         </Card>
@@ -145,7 +175,6 @@ const Index = () => {
           </TabsContent>
         </Tabs>
 
-        {/* Security Warning */}
         <Alert className="bg-orange-50 border-orange-200">
           <AlertTriangle className="h-4 w-4 text-orange-600" />
           <AlertDescription className="text-orange-800">
