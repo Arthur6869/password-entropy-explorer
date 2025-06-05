@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -14,6 +13,7 @@ import { EntropyAnalyzer } from '@/components/EntropyAnalyzer';
 import { BruteForceSimulator } from '@/components/BruteForceSimulator';
 import { StatisticsVisualizer } from '@/components/StatisticsVisualizer';
 import { Shield, Lock, Key, AlertTriangle } from 'lucide-react';
+import { EntropyComparison } from '@/components/EntropyComparison';
 
 const Index = () => {
   const [passwordLength, setPasswordLength] = useState(16);
@@ -135,8 +135,9 @@ const Index = () => {
 
         {/* Main Content Tabs */}
         <Tabs defaultValue="generator" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4 bg-white/80 backdrop-blur-sm">
+          <TabsList className="grid w-full grid-cols-5 bg-white/80 backdrop-blur-sm">
             <TabsTrigger value="generator">Geração</TabsTrigger>
+            <TabsTrigger value="comparison">Comparativo</TabsTrigger>
             <TabsTrigger value="analysis">Análise</TabsTrigger>
             <TabsTrigger value="bruteforce">Força Bruta</TabsTrigger>
             <TabsTrigger value="statistics">Estatísticas</TabsTrigger>
@@ -147,6 +148,13 @@ const Index = () => {
               length={passwordLength}
               characterSets={characterSets}
               onPasswordsGenerated={setGeneratedPasswords}
+            />
+          </TabsContent>
+
+          <TabsContent value="comparison">
+            <EntropyComparison
+              length={passwordLength}
+              characterSets={characterSets}
             />
           </TabsContent>
 
